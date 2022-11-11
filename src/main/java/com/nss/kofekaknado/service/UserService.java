@@ -5,11 +5,11 @@ import com.nss.kofekaknado.domain.Users;
 import java.util.List;
 
 public interface UserService {
-    void create(Users users);
+    Users create(Users users);
 
-    Users login(String phone, String password);
+    Users login(String phoneNumber);
 
-    void removeByPhoneNumber(String number);
+    Users removeByPhoneNumber(String number);
 
     List<Users> getAll();
 }

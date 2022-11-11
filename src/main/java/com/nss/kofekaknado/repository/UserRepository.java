@@ -2,7 +2,6 @@ package com.nss.kofekaknado.repository;
 
 import com.nss.kofekaknado.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository

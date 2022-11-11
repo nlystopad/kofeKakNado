@@ -2,7 +2,6 @@ package com.nss.kofekaknado.web;
 
 import com.nss.kofekaknado.domain.Users;
 import com.nss.kofekaknado.service.UserService;
-import com.nss.kofekaknado.utils.dto.UserCredsDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,31 +19,34 @@ public class UserController {
 
     @PostMapping("/signUp")
     @ResponseStatus(HttpStatus.CREATED)
-    public Users createUser(@RequestBody Users users){
+    public Users createUser(@RequestBody Users users) {
         log.info("createUser() - started");
-        userService.create(users);
-        log.info("createUser() - ended");
-        
+        Users created = userService.create(users);
+        log.info("createUser() - ended,new id = {}", created.getId());
+        return created;
     }
 
     @GetMapping("/signIn")
     @ResponseStatus(HttpStatus.OK)
-    public Users login() {
-        log.info("login() - started");
+    public Users login(@RequestBody String phoneNumber) {
+        log.info("login() - started, phone number to check = {}", phoneNumber);
+        Users login = userService.login(phoneNumber);
         log.info("login() - ended");
+        return login;
     }
 
 
     @PatchMapping("/delete/{number}`")
     @ResponseStatus(HttpStatus.OK)
     public Users removeByPhoneNumber(@PathVariable String number) {
-
-        userService.removeByPhoneNumber(number);
-
+        log.info("removeByPhoneNumber() - started, number = {}", number);
+        Users deleted = userService.removeByPhoneNumber(number);
+        log.info("removeByPhoneNumber() - ended, id = {}", deleted.getId());
+        return deleted;
     }
 
     @GetMapping("/test")
-    public List<Users> testUser(){
+    public List<Users> testUser() {
         return userService.getAll();
     }
 

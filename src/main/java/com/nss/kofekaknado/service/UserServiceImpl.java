@@ -22,19 +22,19 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void create(Users users) {
+    public Users create(Users users) {
         checkExist(users);
         String password = users.getPassword();
         if (password == null || password.equals("")) {
             throw new WrongPasswordException();
         }
         users.setPassword(passwordEncoder.encode(password));
-        userRepository.save(users);
+        return userRepository.save(users);
     }
 
     @Override
-    public Users login(String phone, String password) {
-        Users u = userRepository.findByPhoneNumber(phone);
+    public Users login(String phoneNumber) {
+        Users u = userRepository.findByPhoneNumber(phoneNumber);
         if (u == null) {
             throw new IncorrectPhoneNumberException();
         }
@@ -42,12 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeByPhoneNumber(String number) {
+    public Users removeByPhoneNumber(String number) {
         log.info("removeByPhoneNumber() - start: number = {}", number);
         Users u = userRepository.findByPhoneNumber(number);
         u.setDeleted(Boolean.TRUE);
-        userRepository.save(u);
+        Users deleted = userRepository.save(u);
         log.info("removeByPhoneNumber() - end: number = {}", number);
+        return deleted;
     }
 
     @Override
