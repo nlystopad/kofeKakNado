@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Slf4j
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public Users removeByPhoneNumber(String number) {
         log.info("removeByPhoneNumber() - start: number = {}", number);
         Users u = userRepository.findByPhoneNumber(number);
-        u.setDeleted(Boolean.TRUE);
+        u.setIsDeleted(Boolean.TRUE);
         Users deleted = userRepository.save(u);
         log.info("removeByPhoneNumber() - end: number = {}", number);
         return deleted;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
      */
     private void checkExist(Users users) {
         Users byPhone = userRepository.findByPhoneNumber(users.getPhoneNumber());
-        if (byPhone != null || byPhone.equals(users)) {
+        if (byPhone != null) {
             throw new AlreadyExistException();
         }
     }

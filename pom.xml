@@ -59,7 +59,12 @@
             <version>5.7.5</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- swagger -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.9</version>
+        </dependency>
     </dependencies>
 
     <build>
