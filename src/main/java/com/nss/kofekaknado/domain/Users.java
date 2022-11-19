@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     @Schema(description = "unique identifier of user", pattern = "sequence")
     private Integer id;
@@ -43,6 +43,9 @@ public class Users {
 
     @Schema(description = "User's role", example = "user", allowableValues = {"user", "admin"})
     private String role = "user";
+
+    @OneToOne(mappedBy = "user")        // todo: add  swagger
+    private Preorder  preorder;
 
 
     @Override
