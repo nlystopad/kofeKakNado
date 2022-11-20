@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "preorders")
 public class Preorder {  // todo: add  swagger
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
