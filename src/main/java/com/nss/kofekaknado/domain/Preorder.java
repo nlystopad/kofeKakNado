@@ -25,7 +25,7 @@ public class Preorder {  // todo: add  swagger
     @Column(name = "order_status")
     private OrderStatuses status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Users user;
 

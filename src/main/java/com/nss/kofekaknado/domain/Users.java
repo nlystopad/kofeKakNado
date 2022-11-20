@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -44,8 +45,13 @@ public class Users {
     @Schema(description = "User's role", example = "user", allowableValues = {"user", "admin"})
     private String role = "user";
 
-    @OneToOne(mappedBy = "user")        // todo: add  swagger
-    private Preorder  preorder;
+    @OneToMany(mappedBy = "user")
+    @Schema(description = "List of user's preorders")
+    private List<Preorder> preorders;
+    @ManyToOne
+    @JoinColumn(name = "coffee_point_id", referencedColumnName = "id")
+    @Schema(description = "Coffee point in which user is now")
+    private CoffeePoint point;
 
 
     @Override
