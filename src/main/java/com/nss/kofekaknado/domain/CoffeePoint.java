@@ -24,9 +24,10 @@ public class CoffeePoint {
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "point")
-    private Set<Users> usersSet;
+    @ManyToOne
+    @JoinColumn(name = "plan_event_id", referencedColumnName = "id")
+    private PlanEvent event;
 
-    @OneToMany(mappedBy = "point")
-    private List<Event> events;
+    @OneToOne(mappedBy = "point")
+    private Preorder preorder;
 }

@@ -1,5 +1,6 @@
 package com.nss.kofekaknado.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,13 +46,10 @@ public class Users {
     @Schema(description = "User's role", example = "user", allowableValues = {"user", "admin"})
     private String role = "user";
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Schema(description = "List of user's preorders")
+    @JsonIgnore
     private List<Preorder> preorders;
-    @ManyToOne
-    @JoinColumn(name = "coffee_point_id", referencedColumnName = "id")
-    @Schema(description = "Coffee point in which user is now")
-    private CoffeePoint point;
 
 
     @Override

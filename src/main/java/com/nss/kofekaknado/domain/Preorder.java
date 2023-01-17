@@ -30,5 +30,9 @@ public class Preorder {  // todo: add  swagger
     private Users user;
 
     @OneToMany(mappedBy = "preorder")
-    private List<BuffCoffee>  buffCoffees;
+    private List<MenuItem> items;
+
+    @OneToOne
+    @JoinColumn(name = "point_id", referencedColumnName = "id")
+    private CoffeePoint point;
 }

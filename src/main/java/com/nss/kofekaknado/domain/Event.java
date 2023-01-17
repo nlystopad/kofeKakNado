@@ -19,9 +19,13 @@ public class Event {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    private String eventName;
+    private String title;
+
+    private String description;
+
+    private String content;
 
     @ManyToOne
-    @JoinColumn(name = "coffee_point_id", referencedColumnName = "id")
-    private CoffeePoint point;
+    @JoinColumn(name = "plan_event_id", referencedColumnName = "id")
+    private PlanEvent event;
 }
