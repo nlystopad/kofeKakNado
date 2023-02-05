@@ -24,8 +24,10 @@ public class UserServiceImpl implements UserService {
     public Users create(Users users) {
         checkExist(users);
         String password = users.getPassword();
-        if (password == null || password.equals("")) {
-            throw new WrongPasswordException();
+        if (password == null ) {
+            throw new WrongPasswordException("Sorry, you MUST HAVE a password");
+        } else if (password.equals("")) {
+            throw new WrongPasswordException("Password field should not be empty");
         }
         users.setPassword(passwordEncoder.encode(password));
         return userRepository.save(users);
