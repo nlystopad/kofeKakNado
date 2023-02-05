@@ -1,6 +1,5 @@
 package com.nss.kofekaknado.utils.authentification;
 
-import com.nss.kofekaknado.domain.Users;
 import com.nss.kofekaknado.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +15,8 @@ public class DataBaseUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final UserDetailsMapper userDetailsMapper;
-
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        Users users = userRepository.findByPhoneNumber(phoneNumber);
-        return userDetailsMapper.toUserDetails(users);
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 }

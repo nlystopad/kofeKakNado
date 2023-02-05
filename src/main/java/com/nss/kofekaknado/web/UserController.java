@@ -1,14 +1,21 @@
 package com.nss.kofekaknado.web;
 
-import com.nss.kofekaknado.domain.Users;
+import com.nss.kofekaknado.model.domain.Users;
+import com.nss.kofekaknado.model.dto.UserCredsDto;
 import com.nss.kofekaknado.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +26,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signUp")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,11 +50,21 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User was successfully logged in"),
             @ApiResponse(responseCode = "400", description = "User with such phone number doesn't exist")
     })
-    public Users login(@RequestBody String phoneNumber) {
-        log.info("login() - started, phone number to check = {}", phoneNumber);
-        Users login = userService.login(phoneNumber);
-        log.info("login() - ended");
-        return login;
+    public ResponseEntity<Users> login(@RequestBody UserCredsDto creds) {
+        log.info("login() - started");
+        try {
+            Authentication authentication = authenticationManager.
+                    authenticate(new UsernamePasswordAuthenticationToken(creds.getPhoneNumber(), creds.getPassword()));
+
+            Users user = (Users) authentication.getPrincipal();
+            log.info("login() - BadCredentialsException");
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION)
+                    .body(user);
+        } catch (BadCredentialsException exception) {
+            log.info("login() - BadCredentialsException");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
 

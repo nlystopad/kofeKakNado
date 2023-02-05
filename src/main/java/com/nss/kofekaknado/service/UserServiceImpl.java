@@ -1,9 +1,8 @@
 package com.nss.kofekaknado.service;
 
-import com.nss.kofekaknado.domain.Users;
+import com.nss.kofekaknado.model.domain.Users;
 import com.nss.kofekaknado.repository.UserRepository;
 import com.nss.kofekaknado.utils.exception.AlreadyExistException;
-import com.nss.kofekaknado.utils.exception.IncorrectPhoneNumberException;
 import com.nss.kofekaknado.utils.exception.WrongPasswordException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Slf4j
@@ -33,14 +31,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(users);
     }
 
-    @Override
-    public Users login(String phoneNumber) {
-        Users u = userRepository.findByPhoneNumber(phoneNumber);
-        if (u == null) {
-            throw new IncorrectPhoneNumberException();
-        }
-        return u;
-    }
 
     @Override
     public Users removeByPhoneNumber(String number) {
