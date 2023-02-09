@@ -9,5 +9,8 @@ public interface UserService {
 
     Users removeByPhoneNumber(String number);
 
+    Users addBonuses(String number, Integer bonusesAmount);
+    Users removeBonuses(String number, Integer bonusesAmount);
+
     List<Users> getAll();
 }

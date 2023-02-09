@@ -9,5 +9,4 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Users findByPhoneNumber(String phoneNumber);
 
-
 }

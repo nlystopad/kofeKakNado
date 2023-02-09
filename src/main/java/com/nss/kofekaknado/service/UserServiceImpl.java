@@ -3,11 +3,13 @@ package com.nss.kofekaknado.service;
 import com.nss.kofekaknado.model.domain.Users;
 import com.nss.kofekaknado.repository.UserRepository;
 import com.nss.kofekaknado.utils.exception.AlreadyExistException;
+import com.nss.kofekaknado.utils.exception.UserNotFoundException;
 import com.nss.kofekaknado.utils.exception.WrongPasswordException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,11 +39,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users removeByPhoneNumber(String number) {
         log.info("removeByPhoneNumber() - start: number = {}", number);
-        Users u = userRepository.findByPhoneNumber(number);
+        Users u = getUserByPhoneNumber(number);
         u.setIsDeleted(Boolean.TRUE);
         Users deleted = userRepository.save(u);
         log.info("removeByPhoneNumber() - end: number = {}", number);
         return deleted;
+    }
+
+    @Override
+    public Users addBonuses(String number, Integer bonusesAmount) {
+        log.info("addBonuses() - start: bonusesAmount = {}", bonusesAmount);
+        Users user = getUserByPhoneNumber(number);
+        user.setBonuses(user.getBonuses() + bonusesAmount);
+        if (user.getBonuses() >= 5000 && !user.getPatron()) {
+            user.setPatron(true);
+        }
+        log.info("addBonuses() - bonuses: before = {}", user.getBonuses());
+        Users saved = userRepository.save(user);
+        log.info("addBonuses() - end: finalAmount = {}", saved.getBonuses());
+        return saved;
+    }
+
+    @Override
+    public Users removeBonuses(String number, Integer bonusesAmount) {
+        log.info("addBonuses() - start: bonusesAmount = {}", bonusesAmount);
+        Users user = getUserByPhoneNumber(number);
+        user.setBonuses(user.getBonuses() - bonusesAmount);
+        log.info("addBonuses() - bonuses: before = {}", user.getBonuses());
+        Users saved = userRepository.save(user);
+        log.info("addBonuses() - end: finalAmount = {}", saved.getBonuses());
+        return saved;
+    }
+
+    private Users getUserByPhoneNumber(String number) {
+        Users u = userRepository.findByPhoneNumber(number);
+        if (u == null) {
+            throw new UserNotFoundException(String.format("User with phone number %s was not found", number));
+        }
+        return u;
     }
 
     @Override

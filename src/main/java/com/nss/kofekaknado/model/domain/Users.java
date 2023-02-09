@@ -1,5 +1,6 @@
 package com.nss.kofekaknado.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,9 +44,22 @@ public class Users implements UserDetails {
     private Integer bonuses = 0;
 
     @Schema(description = "Technical field, which is used instead of deleting")
+    @JsonIgnore
     private Boolean isDeleted = Boolean.FALSE;
 
+    @Schema(description = "Technical field, which is used to let user use his bonuses")
+    @JsonIgnore
+    private Boolean patron = Boolean.FALSE;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Transient
+    private Set<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,11 +71,6 @@ public class Users implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getPhoneNumber(), getPassword(), getName(), getBonuses(), getIsDeleted());
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList();
     }
 
     @Override
