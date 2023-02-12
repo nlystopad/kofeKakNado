@@ -29,6 +29,6 @@ logging:
 # Swagger configuration
 springdoc:
   swagger-ui:
-    path: /swagger-ui # swagger-ui custom path
+    path: /swagger-ui.html # swagger-ui custom path
   api-docs:
     path: /v3/api-docs.yaml
