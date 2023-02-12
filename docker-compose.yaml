@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  homework13:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresqldb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cfkaul9mbjsn9ebdc23g-a:5432/test_85vk
+      - SPRING_DATASOURCE_USERNAME=test_85vk_user
+      - SPRING_DATASOURCE_PASSWORD=6IUtahNCF2HJ3uKn4UeqxWyMwAgCsHSY
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  postgresqldb:
+    image: 'postgres:15'
+    container_name: postgresqldb
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=test_85vk_user
+      - POSTGRES_PASSWORD=6IUtahNCF2HJ3uKn4UeqxWyMwAgCsHSY
+      - POSTGRES_DB=test_85vk
