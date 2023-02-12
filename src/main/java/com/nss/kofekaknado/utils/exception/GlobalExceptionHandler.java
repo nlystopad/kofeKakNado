@@ -16,15 +16,5 @@ public class GlobalExceptionHandler {
         var details = new ErrorDetails(new Date(), "This user already exist", request.getDescription(false));
         return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(IncorrectPhoneNumberException.class)
-    public ResponseEntity<?> handleIncorrectPhoneException(WebRequest  request) {
-        ErrorDetails details = new ErrorDetails(new Date(), "Phone number is incorrect", request.getDescription(false));
-        return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
-    }
 
-    @ExceptionHandler(WrongPasswordException.class)
-    public ResponseEntity<?> handleWrongPasswordException(WebRequest  request) {
-        ErrorDetails details = new ErrorDetails(new Date(), "Password is incorrect", request.getDescription(false));
-        return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
-    }
 }

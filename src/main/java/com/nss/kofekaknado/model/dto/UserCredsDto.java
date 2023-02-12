@@ -1,4 +1,4 @@
-package com.nss.kofekaknado.utils.dto;
+package com.nss.kofekaknado.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
