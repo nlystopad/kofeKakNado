@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/admin/**").hasRole(Role.ADMIN)
-                .antMatchers("/signUp", "/signIn", "/v3/**", "/swagger-ui/**").permitAll()
+                .antMatchers("/signUp", "/signIn", "/v3/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/signIn")
