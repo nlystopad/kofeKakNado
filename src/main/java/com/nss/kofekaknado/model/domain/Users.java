@@ -43,7 +43,7 @@ public class Users implements UserDetails {
     @Schema(description = "Amount of bonuses owned by user", example = "5")
     private Integer bonuses = 0;
 
-    @Schema(description = "Technical field, which is used instead of deleting")
+    @Schema(hidden = true)
     @JsonIgnore
     private Boolean isDeleted = Boolean.FALSE;
 
@@ -53,10 +53,12 @@ public class Users implements UserDetails {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
+    @Schema(hidden = true)
     @Transient
     private Set<Role> roles;
 
     @Override
+    @Schema(hidden = true)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
@@ -74,26 +76,31 @@ public class Users implements UserDetails {
     }
 
     @Override
+    @Schema(hidden = true)
     public String getUsername() {
         return phoneNumber;
     }
 
     @Override
+    @Schema(hidden = true)
     public boolean isAccountNonExpired() {
         return !isDeleted;
     }
 
     @Override
+    @Schema(hidden = true)
     public boolean isAccountNonLocked() {
         return !isDeleted;
     }
 
     @Override
+    @Schema(hidden = true)
     public boolean isCredentialsNonExpired() {
         return !isDeleted;
     }
 
     @Override
+    @Schema(hidden = true)
     public boolean isEnabled() {
         return !isDeleted;
     }
