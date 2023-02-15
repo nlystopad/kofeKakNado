@@ -20,21 +20,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/v3/**"};
     private final DataBaseUserDetailsService dataBaseUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(dataBaseUserDetailsService).passwordEncoder(passwordEncoder());
     }
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/admin/**").hasRole(Role.ADMIN)
-                .antMatchers("/signUp", "/signIn", "/v3/**", "/swagger-ui/*").permitAll()
+                .antMatchers("/signUp", "/signIn").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll() // swagger
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/signIn")
