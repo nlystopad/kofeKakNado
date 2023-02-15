@@ -20,19 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String[] AUTH_WHITELIST = {
-            // -- Swagger UI v2
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            // -- Swagger UI v3 (OpenAPI)
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/v3/**"};
+
     private final DataBaseUserDetailsService dataBaseUserDetailsService;
 
     @Override
@@ -45,17 +33,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/admin/**").hasRole(Role.ADMIN)
-                .antMatchers("/signUp", "/signIn").permitAll()
-                .antMatchers(AUTH_WHITELIST).permitAll() // swagger
-                .anyRequest().authenticated()
+                .antMatchers("/coffee/**").authenticated()
                 .and()
-                .formLogin().loginPage("/signIn")
-                .defaultSuccessUrl("/").permitAll()
+                .formLogin().loginPage("/coffee/signIn")
+                .defaultSuccessUrl("/coffee").permitAll()
                 .and()
                 .httpBasic()
                 .and()
                 .logout().permitAll()
-                .logoutSuccessUrl("/signIn");
+                .logoutSuccessUrl("/coffee/signIn");
     }
 
     @Bean
